@@ -1,3 +1,4 @@
+//Llamado a la API 
 const getTotal = async () => {
     try {
         const response = await fetch('http://localhost:3000/api/total', {
@@ -9,7 +10,7 @@ const getTotal = async () => {
         } = await response.json()
 
         if (data) {
-            //console.log(data)
+            LlenarTabla(data, 'tabla');
             return data;
         }
     } catch (err) {
@@ -18,20 +19,42 @@ const getTotal = async () => {
 }
 
 
+const LlenarTabla = (data, table) => {
+    let rows = "";
+    $.each(data, (i, row) =>{
+        rows += `<tr>
+        <td>${row.location}</td>
+        <td>${row.confirmed}</td>
+        <td>${row.deaths}</td>
+        <td>${row.recovered}</td>
+        <td>${row.active}</td>
+        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Ver detalles
+      </button></td>
+        </tr>`
+    })
+    $(`#${table} tbody`).append(rows);
+}
 
+
+
+
+//Creando función asíncrona
 const Grafica = async () => {
-    var dataPoints1 = [];
-    var dataPoints2 = [];
-    var dataPoints3 = [];
-    var dataPoints4 = [];
-
+    //Creando variables vacías de datos
+    let dataPoints1 = [];
+    let dataPoints2 = [];
+    let dataPoints3 = [];
+    let dataPoints4 = [];
+    
+    //Creando arreglo de países con más de 10.000 casos activos
     const Total = await getTotal();
     const casosImportantes = Total.filter(function (element) {
         return element.active >= 10000;
     })
     //console.log(casosImportantes);
 
-
+    //Para mostrar en la gráfica
     for (let i = 0; i < casosImportantes.length; i++) {
         let activos = casosImportantes[i].active;
         let confirmados = casosImportantes[i].confirmed;
@@ -48,7 +71,7 @@ const Grafica = async () => {
         dataPoints4.push(punto4);
     }
 
-
+    //Creación de gráfico utilizando la librería de CANVASJS
      var chart = new CanvasJS.Chart("chartCovid", {
          animationEnabled: true,
          title:{
@@ -58,13 +81,8 @@ const Grafica = async () => {
          toolTip: {
              shared: true
          },
-         legend: {
-             cursor:"pointer",
-             itemclick: toggleDataSeries
-         },
          data: [{
              type: "column",
-             toolTipContent : 'ver detalle',
              name: "Casos activos",
              legendText: "Casos activos",
              showInLegend: true, 
@@ -72,43 +90,27 @@ const Grafica = async () => {
          },
          {
              type: "column",
-             toolTipContent : null,	
              name: "Casos confirmados",
              legendText: "Casos confirmados",
-             axisYType: "secondary",
              showInLegend: true,
              dataPoints: dataPoints2,
          },
          {
              type: "column",
-             toolTipContent : null,	
              name: "Casos muertos",
              legendText: "Casos muertos",
-             axisYType: "secondary",
              showInLegend: true,
              dataPoints: dataPoints3,
          },
          {
              type: "column",	
-             toolTipContent : null,
              name: "Casos recuperados",
              legendText: "Casos recuperados",
-             axisYType: "secondary",
              showInLegend: true,
              dataPoints: dataPoints4,
          },]
      });
      chart.render();
-     
-     function toggleDataSeries(e) {
-         if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-             e.dataSeries.visible = false;
-         }
-         else {
-             e.dataSeries.visible = true;
-         }
-         chart.render();
-     }
 }
 
 Grafica();
