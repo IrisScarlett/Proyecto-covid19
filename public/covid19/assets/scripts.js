@@ -17,102 +17,95 @@ const getTotal = async () => {
     }
 }
 
+
+
 const Grafica = async () => {
-   
+    var dataPoints1 = [];
+    var dataPoints2 = [];
+    var dataPoints3 = [];
+    var dataPoints4 = [];
+
     const Total = await getTotal();
-    const casosImportantes = Total.filter(function(element){
+    const casosImportantes = Total.filter(function (element) {
         return element.active >= 10000;
     })
-    console.log('miau', casosImportantes);
+    //console.log(casosImportantes);
 
-    var chart = new CanvasJS.Chart("chartCovid", {
-        animationEnabled: true,
-        title:{
-            text: "Covid19"
-        },	
-      
-        toolTip: {
-            shared: true
-        },
-        legend: {
-            cursor:"pointer",
-            itemclick: toggleDataSeries
-        },
-        data: [{
-            type: "column",
-            name: "Casos activos",
-            legendText: "Casos activos",
-            showInLegend: true, 
-            dataPoints:[
-                { label: "Saudi", y: 266.21 },
-                { label: "Venezuela", y: 302.25 },
-                { label: "Iran", y: 157.20 },
-                { label: "Iraq", y: 148.77 },
-                { label: "Kuwait", y: 101.50 },
-                { label: "UAE", y: 97.8 },
-              {label: "USA", y: 100.2}
-            ]
-        },
-        {
-            type: "column",	
-            name: "Casos confirmados",
-            legendText: "Casos confirmados",
-            axisYType: "secondary",
-            showInLegend: true,
-            dataPoints:[
-                { label: "Saudi", y: 10.46 },
-                { label: "Venezuela", y: 2.27 },
-                { label: "Iran", y: 3.99 },
-                { label: "Iraq", y: 4.45 },
-                { label: "Kuwait", y: 2.92 },
-                { label: "UAE", y: 3.1 },
-              {label: "USA", y: 3.4}
-            ]
-        },
-        {
-            type: "column",	
-            name: "Casos muertos",
-            legendText: "Casos muertos",
-            axisYType: "secondary",
-            showInLegend: true,
-            dataPoints:[
-                { label: "Saudi", y: 10.46 },
-                { label: "Venezuela", y: 2.27 },
-                { label: "Iran", y: 3.99 },
-                { label: "Iraq", y: 4.45 },
-                { label: "Kuwait", y: 2.92 },
-                { label: "UAE", y: 3.1 },
-              {label: "USA", y: 3.4}
-            ]
-        },
-        {
-            type: "column",	
-            name: "Casos recuperados",
-            legendText: "Casos recuperados",
-            axisYType: "secondary",
-            showInLegend: true,
-            dataPoints:[
-                { label: "Saudi", y: 10.46 },
-                { label: "Venezuela", y: 2.27 },
-                { label: "Iran", y: 3.99 },
-                { label: "Iraq", y: 4.45 },
-                { label: "Kuwait", y: 2.92 },
-                { label: "UAE", y: 3.1 },
-              {label: "USA", y: 3.4}
-            ]
-        },]
-    });
-    chart.render();
-    
-    function toggleDataSeries(e) {
-        if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-            e.dataSeries.visible = false;
-        }
-        else {
-            e.dataSeries.visible = true;
-        }
-        chart.render();
+
+    for (let i = 0; i < casosImportantes.length; i++) {
+        let activos = casosImportantes[i].active;
+        let confirmados = casosImportantes[i].confirmed;
+        let muertes = casosImportantes[i].deaths;
+        let recuperados = casosImportantes[i].recovered;
+        let pais = casosImportantes[i].location;
+        let punto1 = {'label': pais, 'y': activos};
+        let punto2 = {'label': pais, 'y': confirmados};
+        let punto3 = {'label': pais, 'y': muertes};
+        let punto4 = {'label': pais, 'y': recuperados};
+        dataPoints1.push(punto1);
+        dataPoints2.push(punto2);
+        dataPoints3.push(punto3);
+        dataPoints4.push(punto4);
     }
+
+   console.log('aqui', dataPoints1);
+
+     var chart = new CanvasJS.Chart("chartCovid", {
+         animationEnabled: true,
+         title:{
+             text: "Covid19"
+         },	
+       
+         toolTip: {
+             shared: true
+         },
+         legend: {
+             cursor:"pointer",
+             itemclick: toggleDataSeries
+         },
+         data: [{
+             type: "column",
+             name: "Casos activos",
+             legendText: "Casos activos",
+             showInLegend: true, 
+             dataPoints: dataPoints1,
+         },
+         {
+             type: "column",	
+             name: "Casos confirmados",
+             legendText: "Casos confirmados",
+             axisYType: "secondary",
+             showInLegend: true,
+             dataPoints: dataPoints2,
+         },
+         {
+             type: "column",	
+             name: "Casos muertos",
+             legendText: "Casos muertos",
+             axisYType: "secondary",
+             showInLegend: true,
+             dataPoints: dataPoints3,
+         },
+         {
+             type: "column",	
+             name: "Casos recuperados",
+             legendText: "Casos recuperados",
+             axisYType: "secondary",
+             showInLegend: true,
+             dataPoints: dataPoints4,
+         },]
+     });
+     chart.render();
+     
+     function toggleDataSeries(e) {
+         if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+             e.dataSeries.visible = false;
+         }
+         else {
+             e.dataSeries.visible = true;
+         }
+         chart.render();
+     }
 }
 
 Grafica();
