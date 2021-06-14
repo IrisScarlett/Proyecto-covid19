@@ -48,7 +48,7 @@ const Grafica = async () => {
         dataPoints4.push(punto4);
     }
 
-    
+
      var chart = new CanvasJS.Chart("chartCovid", {
          animationEnabled: true,
          title:{
@@ -64,13 +64,15 @@ const Grafica = async () => {
          },
          data: [{
              type: "column",
+             toolTipContent : 'ver detalle',
              name: "Casos activos",
              legendText: "Casos activos",
              showInLegend: true, 
              dataPoints: dataPoints1,
          },
          {
-             type: "column",	
+             type: "column",
+             toolTipContent : null,	
              name: "Casos confirmados",
              legendText: "Casos confirmados",
              axisYType: "secondary",
@@ -78,7 +80,8 @@ const Grafica = async () => {
              dataPoints: dataPoints2,
          },
          {
-             type: "column",	
+             type: "column",
+             toolTipContent : null,	
              name: "Casos muertos",
              legendText: "Casos muertos",
              axisYType: "secondary",
@@ -87,6 +90,7 @@ const Grafica = async () => {
          },
          {
              type: "column",	
+             toolTipContent : null,
              name: "Casos recuperados",
              legendText: "Casos recuperados",
              axisYType: "secondary",
