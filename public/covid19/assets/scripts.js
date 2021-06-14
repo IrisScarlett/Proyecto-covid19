@@ -48,8 +48,7 @@ const Grafica = async () => {
         dataPoints4.push(punto4);
     }
 
-   console.log('aqui', dataPoints1);
-
+    
      var chart = new CanvasJS.Chart("chartCovid", {
          animationEnabled: true,
          title:{
