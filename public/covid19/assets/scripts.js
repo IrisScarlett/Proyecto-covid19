@@ -106,8 +106,58 @@ const Grafica = async () => {
     chart.render();
 }
 
+//Llamado a la grafica situacion mundial con mas de 10.000 casos
 Grafica();
 
+
+//Llamada a API country
+
+const getCountry = async (country) => {
+    let jwt = localStorage.getItem('jwt-token');
+    try {
+        const response = await fetch (`http://localhost:3000/api/countries/${country}`, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${jwt}`
+            }
+        })
+        const {data} = await response.json()
+        return data
+    } catch (err) {
+        console.error(`Error: ${err}`)
+    }
+}
+
+
+//Para cargar la grafica del modal
+const cargarDatos = async (country) => {
+    let infoCountry = await getCountry(country);
+
+
+    var chart = new CanvasJS.Chart("chartDetalle", {
+        animationEnabled: true,
+        title: {
+            text: `Detalle de ${country}`
+        },
+        data: [{
+            type: "pie",
+            startAngle: 240,
+            yValueFormatString: "##0.00\"%\"",
+            indexLabel: "{label} {y}",
+            dataPoints: [
+                {y: infoCountry.active, label: "Activos"},
+                {y: infoCountry.deaths, label: "Muertes"},
+                {y: infoCountry.recovered, label: "Recuperados"},
+                {y: infoCountry.confirmed, label: "Confirmados"}
+            ]
+        }]
+    });
+    chart.render();
+    
+}
+
+
+//Llenado de tabla con situacion mundial
 const LlenarTabla = async (data, table) => {
     let rows = "";
     $.each(data, async (i, row) => {
@@ -117,91 +167,11 @@ const LlenarTabla = async (data, table) => {
         <td>${row.deaths}</td>
         <td>${row.recovered}</td>
         <td>${row.active}</td>
-        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="cargarDatos('${row.location}')">
         Ver detalles
       </button></td>
         </tr>`;
-        const locacion = await getCountry(row.location);
-        let A = locacion.active;
-        let C = locacion.confirmed;
-        let M = locacion.deaths;
-        let R = locacion.recovered;
-    
-
-    let puntoA = {
-        'y': A
-    };
-    let puntoB = {
-        'y': C
-    };
-    let puntoC = {
-        'y': M
-    };
-    let puntoD = {
-        'y': R
-    };
-
-
-    var chart = new CanvasJS.Chart("chartDetalle", {
-        animationEnabled: true,
-        theme: "light2", // "light1", "light2", "dark1", "dark2"
-        title: {
-            text: "Detalle"
-        },
-        data: [{
-                type: "column",
-                showInLegend: true,
-                legendMarkerColor: "grey",
-                legendText: "Activos",
-                dataPoints: puntoA
-            },
-            {
-                type: "column",
-                showInLegend: true,
-                legendMarkerColor: "grey",
-                legendText: "Confirmados",
-                dataPoints: puntoB
-            },
-            {
-                type: "column",
-                showInLegend: true,
-                legendMarkerColor: "grey",
-                legendText: "Muertos",
-                dataPoints: puntoC
-            },
-            {
-                type: "column",
-                showInLegend: true,
-                legendMarkerColor: "grey",
-                legendText: "Recuperados",
-                dataPoints: puntoD
-            }
-        ]
-    });
-    chart.render();
-
     })
     $(`#${table} tbody`).append(rows);
-    
-
-
 }
 
-
-const getCountry = async (country) => {
-    try {
-        const response = await fetch(`http://localhost:3000/api/countries/${country}`, {
-            method: 'GET'
-        })
-
-        const {
-            data
-        } = await response.json()
-
-        if (data) {
-            return data;
-        }
-    } catch (err) {
-        console.error(`Error: ${err}`)
-    }
-}
