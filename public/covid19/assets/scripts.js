@@ -218,7 +218,6 @@ $('#js-form').submit(async (event) => {
     const password = document.getElementById('js-input-password').value;
     const JWT = await postData(email, password);
     console.log(JWT);
-
 })
 
 //Funcion para cambiar el navbar al iniciar sesion
@@ -252,7 +251,11 @@ const getConfirmed = async () => {
         const {
             data
         } = await response.json()
-        return data
+        if (data) {
+            toggleMundialAndChile('sMundial-wrapper', 'sChile-wrapper')
+            return data
+        }
+
     } catch (err) {
         console.error(`Error: ${err}`)
     }
@@ -294,15 +297,12 @@ const getRecovered = async () => {
     }
 }
 
+//Grafica Situaci
 const GraficaChile = async () => {
 
     let confirmed = await getConfirmed();
     let deaths = await getDeaths();
     let recovered = await getRecovered();
-
-    console.log(confirmed[1]);
-    console.log(deaths[2]);
-    console.log(recovered[3]);
 
     let data1 = [];
     let data2 = [];
@@ -311,7 +311,7 @@ const GraficaChile = async () => {
     //Para mostrar en la gráfica confirmados
     for (let i = 0; i < confirmed.length; i++) {
         let fecha = confirmed[i].date;
-        let total = casosImportantes[i].total;
+        let total = confirmed[i].total;
         let punto1 = {
             'label': fecha,
             'y': total
@@ -338,11 +338,6 @@ const GraficaChile = async () => {
         };
         data3.push(punto3);
     }
-
-
-
-
-
 
     var chart = new CanvasJS.Chart("chartChile", {
         theme:"light2",
@@ -372,14 +367,14 @@ const GraficaChile = async () => {
         {
             type: "spline", 
             showInLegend: true,
-            yValueFormatString: "##.00",
+            yValueFormatString: "##.",
             name: "Muertes",
             dataPoints: data2
         },
         {
             type: "spline", 
             showInLegend: true,
-            yValueFormatString: "##.00",
+            yValueFormatString: "##.",
             name: "Casos recuperados",
             dataPoints: data3
         }]
@@ -395,26 +390,21 @@ const GraficaChile = async () => {
         chart.render();
     }
 
+    
 }
 
-
-
-
-//Grafica situación Chile
-
-
-
-/*
 //Para borrar lo que hay en la pagina y mostrar situacion Chile
 const toggleMundialAndChile = (mundial, chile) => {
     $(`#${mundial}`).toggle()
     $(`#${chile}`).toggle()
-}*/
+    }
 
+
+/*
 const init = async () => {
     const token = localStorage.getItem('jwt-token')
     if (token) {
         return token
     }
 }
-init()
+init()*/
