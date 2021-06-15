@@ -374,47 +374,14 @@ const GraficaChile = async () => {
             showInLegend: true,
             yValueFormatString: "##.00",
             name: "Muertes",
-            dataPoints: [
-                { label: "1/22/20", y: 7.94 },
-                { label: "Ep. 2", y: 7.29 },
-                { label: "Ep. 3", y: 7.28 },
-                { label: "Ep. 4", y: 7.82 },
-                { label: "Ep. 5", y: 7.89 },
-                { label: "Ep. 6", y: 6.71 },
-                { label: "Ep. 7", y: 7.80 },
-                { label: "Ep. 8", y: 7.60 },
-                { label: "Ep. 9", y: 7.66 },
-                { label: "Ep. 10", y: 8.89 }
-            ]
+            dataPoints: data2
         },
         {
             type: "spline", 
             showInLegend: true,
             yValueFormatString: "##.00",
             name: "Casos recuperados",
-            dataPoints: [
-                { label: "1/22/20", y: 10.11 },
-                { label: "Ep. 2", y: 9.27 },
-                { label: "Ep. 3", y: 9.25 },
-                { label: "Ep. 4", y: 10.17 },
-                { label: "Ep. 5", y: 10.72 },
-                { label: "Ep. 6", y: 10.24 },
-                { label: "Ep. 7", y: 12.07 }
-            ]
-        },
-              {
-            type: "spline", 
-            showInLegend: true,
-            yValueFormatString: "##.",
-            name: "Season 8",
-            dataPoints: [
-                { label: "1/22/20", y: 0 },
-                { label: "Ep. 2", y: 10.29 },
-                { label: "Ep. 3", y: 12.02 },
-                { label: "Ep. 4", y: 11.80 },
-                { label: "Ep. 5", y: 12.48 },
-                { label: "Ep. 6", y: 13.61 }
-            ]
+            dataPoints: data3
         }]
     });
     chart.render();
