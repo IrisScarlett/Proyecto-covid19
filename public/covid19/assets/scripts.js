@@ -19,26 +19,6 @@ const getTotal = async () => {
 }
 
 
-const LlenarTabla = (data, table) => {
-    let rows = "";
-    $.each(data, (i, row) =>{
-        rows += `<tr>
-        <td>${row.location}</td>
-        <td>${row.confirmed}</td>
-        <td>${row.deaths}</td>
-        <td>${row.recovered}</td>
-        <td>${row.active}</td>
-        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Ver detalles
-      </button></td>
-        </tr>`
-    })
-    $(`#${table} tbody`).append(rows);
-}
-
-
-
-
 //Creando función asíncrona
 const Grafica = async () => {
     //Creando variables vacías de datos
@@ -46,7 +26,7 @@ const Grafica = async () => {
     let dataPoints2 = [];
     let dataPoints3 = [];
     let dataPoints4 = [];
-    
+
     //Creando arreglo de países con más de 10.000 casos activos
     const Total = await getTotal();
     const casosImportantes = Total.filter(function (element) {
@@ -61,10 +41,22 @@ const Grafica = async () => {
         let muertes = casosImportantes[i].deaths;
         let recuperados = casosImportantes[i].recovered;
         let pais = casosImportantes[i].location;
-        let punto1 = {'label': pais, 'y': activos};
-        let punto2 = {'label': pais, 'y': confirmados};
-        let punto3 = {'label': pais, 'y': muertes};
-        let punto4 = {'label': pais, 'y': recuperados};
+        let punto1 = {
+            'label': pais,
+            'y': activos
+        };
+        let punto2 = {
+            'label': pais,
+            'y': confirmados
+        };
+        let punto3 = {
+            'label': pais,
+            'y': muertes
+        };
+        let punto4 = {
+            'label': pais,
+            'y': recuperados
+        };
         dataPoints1.push(punto1);
         dataPoints2.push(punto2);
         dataPoints3.push(punto3);
@@ -72,45 +64,144 @@ const Grafica = async () => {
     }
 
     //Creación de gráfico utilizando la librería de CANVASJS
-     var chart = new CanvasJS.Chart("chartCovid", {
-         animationEnabled: true,
-         title:{
-             text: "Covid19"
-         },	
-       
-         toolTip: {
-             shared: true
-         },
-         data: [{
-             type: "column",
-             name: "Casos activos",
-             legendText: "Casos activos",
-             showInLegend: true, 
-             dataPoints: dataPoints1,
-         },
-         {
-             type: "column",
-             name: "Casos confirmados",
-             legendText: "Casos confirmados",
-             showInLegend: true,
-             dataPoints: dataPoints2,
-         },
-         {
-             type: "column",
-             name: "Casos muertos",
-             legendText: "Casos muertos",
-             showInLegend: true,
-             dataPoints: dataPoints3,
-         },
-         {
-             type: "column",	
-             name: "Casos recuperados",
-             legendText: "Casos recuperados",
-             showInLegend: true,
-             dataPoints: dataPoints4,
-         },]
-     });
-     chart.render();
+    var chart = new CanvasJS.Chart("chartCovid", {
+        animationEnabled: true,
+        title: {
+            text: "Covid19"
+        },
+
+        toolTip: {
+            shared: true
+        },
+        data: [{
+                type: "column",
+                name: "Casos activos",
+                legendText: "Casos activos",
+                showInLegend: true,
+                dataPoints: dataPoints1,
+            },
+            {
+                type: "column",
+                name: "Casos confirmados",
+                legendText: "Casos confirmados",
+                showInLegend: true,
+                dataPoints: dataPoints2,
+            },
+            {
+                type: "column",
+                name: "Casos muertos",
+                legendText: "Casos muertos",
+                showInLegend: true,
+                dataPoints: dataPoints3,
+            },
+            {
+                type: "column",
+                name: "Casos recuperados",
+                legendText: "Casos recuperados",
+                showInLegend: true,
+                dataPoints: dataPoints4,
+            },
+        ]
+    });
+    chart.render();
 }
 
 Grafica();
+
+const LlenarTabla = async (data, table) => {
+    let rows = "";
+    $.each(data, async (i, row) => {
+        rows += `<tr>
+        <td>${row.location}</td>
+        <td>${row.confirmed}</td>
+        <td>${row.deaths}</td>
+        <td>${row.recovered}</td>
+        <td>${row.active}</td>
+        <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Ver detalles
+      </button></td>
+        </tr>`;
+        const locacion = await getCountry(row.location);
+        let A = locacion.active;
+        let C = locacion.confirmed;
+        let M = locacion.deaths;
+        let R = locacion.recovered;
+    
+
+    let puntoA = {
+        'y': A
+    };
+    let puntoB = {
+        'y': C
+    };
+    let puntoC = {
+        'y': M
+    };
+    let puntoD = {
+        'y': R
+    };
+
+
+    var chart = new CanvasJS.Chart("chartDetalle", {
+        animationEnabled: true,
+        theme: "light2", // "light1", "light2", "dark1", "dark2"
+        title: {
+            text: "Detalle"
+        },
+        data: [{
+                type: "column",
+                showInLegend: true,
+                legendMarkerColor: "grey",
+                legendText: "Activos",
+                dataPoints: puntoA
+            },
+            {
+                type: "column",
+                showInLegend: true,
+                legendMarkerColor: "grey",
+                legendText: "Confirmados",
+                dataPoints: puntoB
+            },
+            {
+                type: "column",
+                showInLegend: true,
+                legendMarkerColor: "grey",
+                legendText: "Muertos",
+                dataPoints: puntoC
+            },
+            {
+                type: "column",
+                showInLegend: true,
+                legendMarkerColor: "grey",
+                legendText: "Recuperados",
+                dataPoints: puntoD
+            }
+        ]
+    });
+    chart.render();
+
+    })
+    $(`#${table} tbody`).append(rows);
+    
+
+
+}
+
+
+const getCountry = async (country) => {
+    try {
+        const response = await fetch(`http://localhost:3000/api/countries/${country}`, {
+            method: 'GET'
+        })
+
+        const {
+            data
+        } = await response.json()
+
+        if (data) {
+            return data;
+        }
+    } catch (err) {
+        console.error(`Error: ${err}`)
+    }
+}
