@@ -332,7 +332,7 @@ const GraficaChile = async () => {
     for (let i = 0; i < recovered.length; i++) {
         let fecha = recovered[i].date;
         let total = recovered[i].total;
-        let punto2 = {
+        let punto3 = {
             'label': fecha,
             'y': total
         };
