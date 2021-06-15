@@ -18,25 +18,21 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
+        <ul class="navbar-nav ml-auto" id="navBar">
           <li class="nav-item active">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Iniciar Sesión</a>
+          <li class="nav-item" id="login">
+            <a class="nav-link" href="#" data-toggle="modal" data-target="#LoginModal">Iniciar Sesión</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-
+<div id="sMundial-wrapper" style="display: block;">
   <h1 class="container my-4 text-center">Situación Mundial</h1>
-
-
   <div id="chartCovid" style="height: 370px; width: 100%;"></div>
-  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-  </div>
-
+  
   <div id="tablaCovid">
     <table id="tabla" class="table my-4">
       <thead>
@@ -53,30 +49,58 @@
       </tbody>
     </table>
   </div>
+</div>
+
+<div id="sChile-wrapper" style="display: none;">
+  <div id="chartChile" style="height: 370px; width: 100%;"></div>
+</div>
 
 
-
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Detalle</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div id="chartDetalle" style="height: 370px; width: 100%;"></div>
-  </div>
+  <!-- Modal de Tabla-->
+  <div class="modal fade" id="tablaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Detalle</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div id="chartDetalle" style="height: 370px; width: 100%;"></div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
-</div>
+  </div>
+
+  <!--Modal de Login-->
+  <div class="modal fade" id="LoginModal" aria-labelledby="exampleModalLabel">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <class class="modal-body d-flex justify-content-center">
+            <form id="js-form">
+              <div class="form-group">
+                <label for="js-input-email">Email address</label>
+                <input type="email" class="form-control" aria-describedby="emailHelp" id="js-input-email">
+              </div>
+              <div class="form-group">
+                <label for="js-input-password">Password</label>
+                <input type="password" class="form-control" id="js-input-password">
+              </div>
+              <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Entrar</button>
+            </div>
+            </form>
+          </class>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
 
   <!--Scripts-->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
@@ -88,6 +112,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
     integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous">
   </script>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
   <script src="assets/scripts.js"></script>
 </body>
 
