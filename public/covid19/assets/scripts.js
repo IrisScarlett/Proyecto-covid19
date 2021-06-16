@@ -1,3 +1,4 @@
+let JWT = '';
 //Llamado a la API 
 const getTotal = async () => {
     try {
@@ -216,7 +217,7 @@ $('#js-form').submit(async (event) => {
     event.preventDefault();
     const email = document.getElementById('js-input-email').value;
     const password = document.getElementById('js-input-password').value;
-    const JWT = await postData(email, password);
+    JWT = await postData(email, password);
     console.log(JWT);
 })
 
@@ -226,18 +227,25 @@ const changeNav = document.getElementById('js-form');
 changeNav.addEventListener('submit', () => {
     let change = document.getElementById('navBar');
     change.innerHTML = `
+    <li class="nav-item">
+     <a class="nav-link" href="#">Inicio</a>
+          </li>
     <li class="nav-item" id='NavChile' onclick='GraficaChile()'>
             <a class="nav-link" href="#">Situación Chile</a>
           </li>
-    <li class="nav-item" id='Logout' onclick='logout()'>
-     <a class="nav-link" href="#">Cerrar sesión</a>
+    <li class="nav-item">
+    <button class="btn col-4" id="log-out">Cerrar Sesión</button>
           </li>
     `
+
+    $('#log-out').click(async (event) => {
+        event.preventDefault();
+        JWT = '';
+        location.reload()
+    })
 })
 
 //Situacion Chile
-
-
 let jwt = localStorage.getItem('jwt-token');
 //API para confirmados 
 const getConfirmed = async () => {
@@ -398,6 +406,13 @@ const toggleMundialAndChile = (mundial, chile) => {
     $(`#${mundial}`).toggle()
     $(`#${chile}`).toggle()
     }
+
+
+
+
+
+//Para cerrar sesión
+
 
 
 /*
