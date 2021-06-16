@@ -111,9 +111,7 @@ const Grafica = async () => {
 //Llamado a la grafica situacion mundial con mas de 10.000 casos
 Grafica();
 
-
 //Llamada a API country
-
 const getCountry = async (country) => {
     let jwt = localStorage.getItem('jwt-token');
     try {
@@ -227,13 +225,13 @@ changeNav.addEventListener('submit', () => {
     let change = document.getElementById('navBar');
     change.innerHTML = `
     <li class="nav-item">
-     <a class="nav-link" href="#">Inicio</a>
+     <a class="nav-link" href="#" id='Inicio'>Inicio</a>
           </li>
     <li class="nav-item" id='NavChile' onclick='GraficaChile()'>
             <a class="nav-link" href="#">Situación Chile</a>
           </li>
     <li class="nav-item">
-    <button class="btn col-4" id="log-out">Cerrar Sesión</button>
+    <a class="nav-link" href="#" id="log-out">Cerrar Sesión</a>
           </li>
     `
     //Logout para recargar página
@@ -241,6 +239,10 @@ changeNav.addEventListener('submit', () => {
         event.preventDefault();
         JWT = '';
         location.reload()
+    })
+    $('#Inicio').click(async (event) => {
+        event.preventDefault();
+        toggleMundialAndChile('sMundial-wrapper', 'sChile-wrapper')
     })
 })
 
