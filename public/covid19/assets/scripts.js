@@ -1,3 +1,4 @@
+//Se crea una variable vacía para el JWT
 let JWT = '';
 //Llamado a la API 
 const getTotal = async () => {
@@ -191,7 +192,6 @@ const LlenarTabla = async (data, table) => {
 
 
 //Llamado a la API de LOGIN
-
 const postData = async (email, password) => {
     try {
         const response = await fetch('http://localhost:3000/api/login', {
@@ -218,7 +218,6 @@ $('#js-form').submit(async (event) => {
     const email = document.getElementById('js-input-email').value;
     const password = document.getElementById('js-input-password').value;
     JWT = await postData(email, password);
-    console.log(JWT);
 })
 
 //Funcion para cambiar el navbar al iniciar sesion
@@ -237,7 +236,7 @@ changeNav.addEventListener('submit', () => {
     <button class="btn col-4" id="log-out">Cerrar Sesión</button>
           </li>
     `
-
+    //Logout para recargar página
     $('#log-out').click(async (event) => {
         event.preventDefault();
         JWT = '';
@@ -305,7 +304,7 @@ const getRecovered = async () => {
     }
 }
 
-//Grafica Situaci
+//Grafica Situación Chile
 const GraficaChile = async () => {
 
     let confirmed = await getConfirmed();
@@ -406,20 +405,3 @@ const toggleMundialAndChile = (mundial, chile) => {
     $(`#${mundial}`).toggle()
     $(`#${chile}`).toggle()
     }
-
-
-
-
-
-//Para cerrar sesión
-
-
-
-/*
-const init = async () => {
-    const token = localStorage.getItem('jwt-token')
-    if (token) {
-        return token
-    }
-}
-init()*/
